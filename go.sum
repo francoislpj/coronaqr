@@ -7,6 +7,8 @@ github.com/go-errors/errors v1.4.0 h1:2OA7MFw38+e9na72T1xgkomPb6GzZzzxvJ5U630FoR
 github.com/go-errors/errors v1.4.0/go.mod h1:sIVyrIiJhuEF+Pj9Ebtd6P/rEYROXFi3BopGUQ5a5Og=
 github.com/google/go-cmp v0.5.6 h1:BKbKCqvP6I+rmFHt06ZmyQtvB8xAkWdhFyr0ZUNZcxQ=
 github.com/google/go-cmp v0.5.6/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
+github.com/jinzhu/copier v0.3.2 h1:QdBOCbaouLDYaIPFfi1bKv5F5tPpeTwXe4sD0jqtz5w=
+github.com/jinzhu/copier v0.3.2/go.mod h1:24xnZezI2Yqac9J61UC6/dG/k76ttpq0DdJI3QmUvro=
 github.com/minvws/base45-go v0.1.0 h1:xSQv04sHwL09r3OF3V62AwuVUelv2GGR0uzR5JQy6sQ=
 github.com/minvws/base45-go v0.1.0/go.mod h1:czYbSci2g+xPB5SvQpg1zg1Y7cZ+3zD79wbS1M0LpvY=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

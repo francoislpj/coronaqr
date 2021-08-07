@@ -20,7 +20,13 @@ func printCertificate(decoded *coronaqr.Decoded) {
 	fmt.Printf("Issued:     %v\n", decoded.IssuedAt)
 	fmt.Printf("Expiration: %v\n", decoded.Expiration)
 	fmt.Printf("Contents:   ")
-	spew.Dump(decoded.Cert)
+	humanReadableCert, err := decoded.Cert.ExportToHumanReadable()
+	if err != nil {
+		spew.Dump(decoded.Cert)
+		fmt.Errorf("Export to human readable format failed: %v", err)
+	} else {
+		spew.Dump(humanReadableCert)
+	}
 }
 
 func main() {

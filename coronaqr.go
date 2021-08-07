@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/fxamacker/cbor/v2"
+	"github.com/jinzhu/copier"
 	"github.com/minvws/base45-go/eubase45"
 	"github.com/veraison/go-cose"
 )
@@ -44,6 +45,20 @@ type CovidCert struct {
 	VaccineRecords  []VaccineRecord  `cbor:"v" json:"v"`
 	TestRecords     []TestRecord     `cbor:"t" json:"t"`
 	RecoveryRecords []RecoveryRecord `cbor:"r" json:"r"`
+}
+
+func (src *CovidCert) ExportToHumanReadable() (CovidCert, error) {
+	var cert CovidCert
+	copier.CopyWithOption(&cert, src, copier.Option{DeepCopy: true})
+	for i, record := range cert.VaccineRecords {
+		cert.VaccineRecords[i].Target = getTargetName(record.Target)
+	}
+	for i, record := range cert.TestRecords {
+		cert.TestRecords[i].Target = getTargetName(record.Target)
+		cert.TestRecords[i].TestResult = getTestResultName(record.TestResult)
+		cert.TestRecords[i].TestType = getTestTypeName(record.TestType)
+	}
+	return cert, nil
 }
 
 type Name struct {
@@ -149,6 +164,40 @@ func decompress(compressed []byte) ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+// see https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/release/1.3.0/valuesets/disease-agent-targeted.json
+func getTargetName(id string) string {
+	// Would be better to load JSON
+	if id == "840539006" {
+		return "COVID-19"
+	} else {
+		return id + "(unknown disease ID)"
+	}
+}
+
+// see https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/release/1.3.0/valuesets/test-result.json
+func getTestResultName(id string) string {
+	// Would be better to load JSON
+	if id == "260415000" {
+		return "Not detected"
+	} else if id == "260373001" {
+		return "Detected"
+	} else {
+		return id + " (unknown result ID)"
+	}
+}
+
+// see https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/release/1.3.0/valuesets/test-type.json
+func getTestTypeName(id string) string {
+	// Would be better to load JSON
+	if id == "LP6464-4" {
+		return "Nucleic acid amplification with probe detection"
+	} else if id == "LP217198-3" {
+		return "Rapid immunoassay"
+	} else {
+		return id + " (unknown type ID)"
+	}
 }
 
 type coseHeader struct {
